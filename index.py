@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from config import DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, \
         DB_SCHEMA, XSD_DIRECTORY, XML_DIRECTORY, REGION_CODE
 from connection import connectToDB
@@ -24,8 +26,10 @@ for file in validation:
 """
 createPgTables(parsedXSD, connection, cursor, DB_SCHEMA)
 
-fillPgTables(
-  XML_DIRECTORY, cursor, connection, DB_SCHEMA, REGION_CODE)
+for CUR_REGION_CODE in REGION_CODE:
+    print("==========", datetime.now(), " Начало загрузки региона: ", CUR_REGION_CODE, "==========")
+    fillPgTables(XML_DIRECTORY, cursor, connection, DB_SCHEMA, CUR_REGION_CODE)
+    print("==========", datetime.now(), " Конец загрузки региона: ", CUR_REGION_CODE, "==========")
 
 createFunctions(connection, cursor, DB_SCHEMA)
 
